@@ -1,0 +1,91 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Perfil público de un usuario registrado en ChatSpace.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "status": { "type": "string", "enum": ["online", "away", "busy", "offline"] },
+        "lastSeen": { "type": "string" }
+      },
+      "required": ["id", "displayName", "email"]
+    },
+    "Conversation": {
+      "title": "Conversation",
+      "description": "Conversación directa entre dos personas.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "participantIds": { "type": "array" },
+        "participantDetails": { "type": "object" },
+        "lastMessage": { "type": "object" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "participantIds"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "Mensaje de texto, nota de voz real o imagen en una conversación.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "conversationId": { "type": "string" },
+        "senderId": { "type": "string" },
+        "senderName": { "type": "string" },
+        "senderPhoto": { "type": "string" },
+        "text": { "type": "string" },
+        "type": { "type": "string", "enum": ["text", "audio", "image"] },
+        "audioUrl": { "type": "string" },
+        "audioDuration": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "conversationId", "senderId", "senderName"]
+    },
+    "Call": {
+      "title": "Call",
+      "description": "Sesión de videollamada o llamada de voz en tiempo real con WebRTC.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "callerId": { "type": "string" },
+        "callerName": { "type": "string" },
+        "callerPhoto": { "type": "string" },
+        "receiverId": { "type": "string" },
+        "receiverName": { "type": "string" },
+        "type": { "type": "string", "enum": ["video", "audio"] },
+        "status": { "type": "string", "enum": ["ringing", "accepted", "declined", "ended"] },
+        "offer": { "type": "string" },
+        "answer": { "type": "string" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "callerId", "receiverId", "status", "type"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/User" },
+      "description": "Usuarios registrados en la aplicación."
+    },
+    "/conversations/{conversationId}": {
+      "schema": { "$ref": "#/entities/Conversation" },
+      "description": "Conversaciones directas entre usuarios."
+    },
+    "/conversations/{conversationId}/messages/{messageId}": {
+      "schema": { "$ref": "#/entities/Message" },
+      "description": "Mensajes y audios dentro de la conversación."
+    },
+    "/calls/{callId}": {
+      "schema": { "$ref": "#/entities/Call" },
+      "description": "Señalización de llamadas y videollamadas."
+    },
+    "/calls/{callId}/candidates/{candidateId}": {
+      "schema": { "type": "object" },
+      "description": "Candidatos ICE de WebRTC para conectar el video peer-to-peer."
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "name": "ChatSpace Pro",
+  "description": "Una aplicación avanzada y elegante para chatear y colaborar con personas a través de Google Chat.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
